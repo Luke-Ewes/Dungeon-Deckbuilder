@@ -1,0 +1,64 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-9184287828321756189
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 59143ecf99bd32e408eccc375ff2ddec, type: 3}
+  m_Name: Attack_Instance
+  m_EditorClassIdentifier: 
+  Damage: 10
+  Attacktimes: 1
+--- !u!114 &-5682447875091879437
+MonoBehaviour:
+  m_ObjectHideFlags: 17
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 59143ecf99bd32e408eccc375ff2ddec, type: 3}
+  m_Name: Attack_Instance
+  m_EditorClassIdentifier: 
+  Damage: 10
+  Attacktimes: 1
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 527aa1b37d2637d41be3bf5d4a81e7b2, type: 3}
+  m_Name: StrongAttack
+  m_EditorClassIdentifier: 
+  cardName: Strong Attack
+  Cost: 1
+  Description: Deal 10 damage to the target
+  CardType: 1
+  IconType: 0
+  CustomLogic: {fileID: 0}
+  Effects:
+  - effect: {fileID: -9184287828321756189}
+--- !u!114 &9197976786573637755
+MonoBehaviour:
+  m_ObjectHideFlags: 17
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 59143ecf99bd32e408eccc375ff2ddec, type: 3}
+  m_Name: StrongAttack_Instance
+  m_EditorClassIdentifier: 
+  Damage: 10
+  Attacktimes: 1

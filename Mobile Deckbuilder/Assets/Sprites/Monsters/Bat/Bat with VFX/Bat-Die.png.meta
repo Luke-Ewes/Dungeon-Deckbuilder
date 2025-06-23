@@ -1,0 +1,410 @@
+fileFormatVersion: 2
+guid: a5a2da2b4d23f5e47a19a1f7380a3956
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 7083965057251802639
+    second: Bat-Die_0
+  - first:
+      213: 1753696822303761373
+    second: Bat-Die_1
+  - first:
+      213: 7565947561178401731
+    second: Bat-Die_2
+  - first:
+      213: 139731052989931677
+    second: Bat-Die_3
+  - first:
+      213: 3323688725033899860
+    second: Bat-Die_4
+  - first:
+      213: 429432678325283802
+    second: Bat-Die_5
+  - first:
+      213: -1217099997889035610
+    second: Bat-Die_6
+  - first:
+      213: -7051400061713402223
+    second: Bat-Die_7
+  - first:
+      213: -2057430325190428325
+    second: Bat-Die_8
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 16
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Bat-Die_0
+      rect:
+        serializedVersion: 2
+        x: 15
+        y: 24
+        width: 34
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5294118, y: 0.5625}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f0ef5c6efac4f4260800000000000000
+      internalID: 7083965057251802639
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bat-Die_1
+      rect:
+        serializedVersion: 2
+        x: 81
+        y: 30
+        width: 29
+        height: 16
+      alignment: 9
+      pivot: {x: 0.62068963, y: 0.5625}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: dd3a529e7f1665810800000000000000
+      internalID: 1753696822303761373
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bat-Die_2
+      rect:
+        serializedVersion: 2
+        x: 147
+        y: 35
+        width: 24
+        height: 15
+      alignment: 9
+      pivot: {x: 0.75, y: 0.6}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3cb85458835aff860800000000000000
+      internalID: 7565947561178401731
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bat-Die_3
+      rect:
+        serializedVersion: 2
+        x: 213
+        y: 35
+        width: 19
+        height: 17
+      alignment: 9
+      pivot: {x: 0.94736844, y: 0.5294118}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d906e8107ac60f100800000000000000
+      internalID: 139731052989931677
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bat-Die_4
+      rect:
+        serializedVersion: 2
+        x: 280
+        y: 34
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 1.125, y: 0.5625}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 457dd97294d102e20800000000000000
+      internalID: 3323688725033899860
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bat-Die_5
+      rect:
+        serializedVersion: 2
+        x: 346
+        y: 28
+        width: 15
+        height: 18
+      alignment: 9
+      pivot: {x: 1.2, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: adbe586eeb6a5f500800000000000000
+      internalID: 429432678325283802
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bat-Die_6
+      rect:
+        serializedVersion: 2
+        x: 411
+        y: 14
+        width: 13
+        height: 21
+      alignment: 9
+      pivot: {x: 1.3846154, y: 0.42857143}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6a202b9100efb1fe0800000000000000
+      internalID: -1217099997889035610
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bat-Die_7
+      rect:
+        serializedVersion: 2
+        x: 474
+        y: 8
+        width: 12
+        height: 17
+      alignment: 9
+      pivot: {x: 1.5, y: 0.5294118}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 196b768f005642e90800000000000000
+      internalID: -7051400061713402223
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bat-Die_8
+      rect:
+        serializedVersion: 2
+        x: 539
+        y: 7
+        width: 14
+        height: 20
+      alignment: 9
+      pivot: {x: 1.2857143, y: 0.45}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b5978ec150a8273e0800000000000000
+      internalID: -2057430325190428325
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bat-Die_9
+      rect:
+        serializedVersion: 2
+        x: 603
+        y: 9
+        width: 16
+        height: 20
+      alignment: 9
+      pivot: {x: 1.125, y: 0.45}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 21ddec6ff1aef484d83c724703bdc7a7
+      internalID: -762879620
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bat-Die_10
+      rect:
+        serializedVersion: 2
+        x: 670
+        y: 10
+        width: 17
+        height: 22
+      alignment: 9
+      pivot: {x: 1.0588236, y: 0.4090909}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f693d880192075a478a03b4eba06ce32
+      internalID: 1486391042
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 89868e60442e98c4e88d04a5478e497c
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      Bat-Die_0: 7083965057251802639
+      Bat-Die_1: 1753696822303761373
+      Bat-Die_10: 1486391042
+      Bat-Die_2: 7565947561178401731
+      Bat-Die_3: 139731052989931677
+      Bat-Die_4: 3323688725033899860
+      Bat-Die_5: 429432678325283802
+      Bat-Die_6: -1217099997889035610
+      Bat-Die_7: -7051400061713402223
+      Bat-Die_8: -2057430325190428325
+      Bat-Die_9: -762879620
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

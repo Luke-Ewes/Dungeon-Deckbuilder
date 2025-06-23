@@ -1,0 +1,13 @@
+using UnityEngine;
+
+    #ROOTNAMESPACEBEGIN#
+[CreateAssetMenu(fileName = "#SCRIPTNAME#", menuName = "Scriptable Objects/Effect/#SCRIPTNAME#")]
+public class #SCRIPTNAME# : EffectBase
+{
+	public override void Execute(CardObject card, IDamageable target, IDamageable causer)
+	{
+	
+	}
+
+}
+#ROOTNAMESPACEEND#

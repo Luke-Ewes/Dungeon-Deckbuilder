@@ -1,0 +1,28 @@
+using TMPro;
+using UnityEngine;
+using UnityEngine.UI;
+
+public class HealthbarController : MonoBehaviour
+{
+    [SerializeField] private Image fillImage;
+    [SerializeField] private TextMeshProUGUI healthbarText;
+
+    [Tooltip("The character the healthbar belongs to"), SerializeField] private BaseCharacter character;
+
+
+    private void Awake()
+    {
+        character.HealthUpdated += UpdateHealthBar;
+    }
+
+    private void OnDestroy()
+    {
+        character.HealthUpdated -= UpdateHealthBar;
+    }
+
+    private void UpdateHealthBar(float currentHealth, float maxHealth)
+    {
+        fillImage.fillAmount = currentHealth / maxHealth;
+        healthbarText.text = $"{currentHealth} / {maxHealth}";
+    }
+}

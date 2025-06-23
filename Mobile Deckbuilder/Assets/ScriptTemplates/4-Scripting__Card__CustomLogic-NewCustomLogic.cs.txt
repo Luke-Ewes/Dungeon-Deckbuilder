@@ -1,0 +1,12 @@
+using UnityEngine;
+
+    #ROOTNAMESPACEBEGIN#
+[CreateAssetMenu(fileName = "#SCRIPTNAME#", menuName = "Scriptable Objects/CustomLogic/#SCRIPTNAME#")]
+public class #SCRIPTNAME# : CustomLogic
+{
+    public override void Execute(CardObject card, IDamageable target, IDamageable causer)
+    {
+
+    }
+}
+#ROOTNAMESPACEEND#
