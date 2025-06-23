@@ -21,6 +21,8 @@ public class HandManager : MonoBehaviour
 
     public UnityAction<Card> PlayedCard;
 
+    private Card selectedCard;
+
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -197,10 +199,73 @@ public class HandManager : MonoBehaviour
         }
     }
 
-    private void CardPickedUp(Card card)
+    public void SelectCard(Card card)
+    {
+        if (selectedCard != null)
+        {
+            DeselectCard();
+        }
+
+        selectedCard = card;
+        CenterCard(card);
+
+        HighlightEligibleDropZones(card, true);
+    }
+
+    public void DeselectCard()
+    {
+        if (selectedCard == null) return;
+
+        ResetCardPosition(selectedCard);
+        HighlightEligibleDropZones(selectedCard, false);
+
+        selectedCard = null;
+    }
+
+    private void HighlightEligibleDropZones(Card card, bool highlight)
+    {
+        foreach (DropZone dropZone in FindObjectsByType<DropZone>(FindObjectsSortMode.None))
+        {
+            dropZone.SetHighlight(highlight && dropZone.IsDropAllowed(card));
+        }
+    }
+
+    public Card GetSelectedCard()
+    {
+        return selectedCard;
+    }
+
+    public void PlaySelectedCardOn(IDropZone zone)
+    {
+        if (selectedCard == null) return;
+
+        // Cast zone to interface with target
+        IDamageable damageable = zone.GetGameObject().GetComponent<IDamageable>();
+
+        ValidDrop(selectedCard, damageable);
+        selectedCard = null;
+
+        HighlightEligibleDropZones(null, false);
+    }
+
+    private void CenterCard(Card card)
+    {
+        RectTransform cardRect = card.GetComponent<RectTransform>();
+        cardRect.DOAnchorPos(Vector2.zero, 0.3f).SetEase(Ease.OutBack);
+        cardRect.DOLocalRotateQuaternion(Quaternion.identity, 0.3f);
+        cardRect.transform.SetAsLastSibling();
+    }
+
+    private void ResetCardPosition(Card card)
+    {
+        UpdateCardPositions(); // Resnap the whole hand
+    }
+
+
+    /*private void CardPickedUp(Card card)
     {
         card.transform.DOLocalRotateQuaternion(Quaternion.Euler(0, 0, 0), 0.25f);
-    }
+    }*/
 
     private void InValidDrop(Card card)
     {
@@ -218,7 +283,7 @@ public class HandManager : MonoBehaviour
             DrawCard(CardDeck.Instance.GetRandomCard(), 8);
         }
     }
-
+    
     /// <summary>
     /// Gets a random card from the hand.
     /// </summary>
@@ -246,9 +311,9 @@ public class HandManager : MonoBehaviour
     private void SubscribeToCardActions(Card card)
     {
         CardDraghandler dragHandler = card.GetComponent<CardDraghandler>();
-        dragHandler.PickedUpAction += CardPickedUp;
-        dragHandler.InValidDropAction += InValidDrop;
-        dragHandler.ValidDropAction += ValidDrop;
+        //dragHandler.PickedUpAction += CardPickedUp;
+        //dragHandler.InValidDropAction += InValidDrop;
+        //dragHandler.ValidDropAction += ValidDrop;
     }
 
     /// <summary>
@@ -258,8 +323,8 @@ public class HandManager : MonoBehaviour
     private void UnSubscribeToCardActions(Card card)
     {
         CardDraghandler dragHandler = card.GetComponent<CardDraghandler>();
-        dragHandler.PickedUpAction -= CardPickedUp;
-        dragHandler.InValidDropAction -= InValidDrop;
-        dragHandler.ValidDropAction -= ValidDrop;
+        //dragHandler.PickedUpAction -= CardPickedUp;
+        //dragHandler.InValidDropAction -= InValidDrop;
+        //dragHandler.ValidDropAction -= ValidDrop;
     }
 }

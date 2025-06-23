@@ -1,5 +1,6 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class Card : MonoBehaviour
@@ -49,4 +50,8 @@ public class Card : MonoBehaviour
         return dropZone.IsDropAllowed(this);
     }
 
+    public void OnCardTapped()
+    {
+        HandManager.Instance.SelectCard(this);
+    }
 }
