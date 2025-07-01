@@ -14,7 +14,7 @@ public class AttackEffect : EffectBase
 
         if (causer.GetStatusValue(StatusType.Blind) != 0)
         {
-            targetDamage /= 2; 
+            Mathf.CeilToInt(targetDamage /= 2); 
         }
 
         for (int i = 0; i < Attacktimes; i++)

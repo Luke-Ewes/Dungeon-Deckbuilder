@@ -13,7 +13,7 @@ public class MainMenu : MonoBehaviour
 
     public void StartGame()
     {
-        levelLoader.LoadNewScene("MainScene");
+        GameManager.LoadScene("MapScene");
     }
 
     public void ActivateNewMenu(GameObject newMenu)

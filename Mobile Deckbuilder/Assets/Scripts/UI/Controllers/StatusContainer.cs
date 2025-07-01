@@ -22,16 +22,12 @@ public class StatusContainer : MonoBehaviour
 
     private void OnEnable()
     {
-        character.StatusStackAdded += AddStatusStack;
-        character.StatusStackRemoved += RemoveStatusStack;
-        character.StatusStackEmptied += EmptyStack;
+        SubToActions();
     }
 
     private void OnDisable()
     {
-        character.StatusStackAdded -= AddStatusStack;
-        character.StatusStackRemoved -= RemoveStatusStack;
-        character.StatusStackEmptied -= EmptyStack;
+        UnsubFromActions(character);
     }
 
     /// <summary>
@@ -89,5 +85,21 @@ public class StatusContainer : MonoBehaviour
             statusIconsCount.Remove(type);
             statusIconInstances.Remove(type);
         }
+    }
+
+    private void SubToActions()
+    {
+        character.StatusStackAdded += AddStatusStack;
+        character.StatusStackRemoved += RemoveStatusStack;
+        character.StatusStackEmptied += EmptyStack;
+        character.Died += UnsubFromActions;
+    }
+
+    private void UnsubFromActions(BaseCharacter character)
+    {
+        character.StatusStackAdded -= AddStatusStack;
+        character.StatusStackRemoved -= RemoveStatusStack;
+        character.StatusStackEmptied -= EmptyStack;
+        character.Died -= UnsubFromActions;
     }
 }

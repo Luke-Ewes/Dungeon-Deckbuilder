@@ -67,6 +67,41 @@ MonoBehaviour:
   effect:
   - effect: {fileID: -7258713952910700330}
   - effect: {fileID: -2785722369459814074}
+  - effect: {fileID: 2150928288278822733}
+--- !u!114 &447019226349365499
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4c8c1ce57fc6018429441435ea724b69, type: 3}
+  m_Name: AddStatus_Instance
+  m_EditorClassIdentifier: 
+  iconType: 2
+  animType: 0
+  statusType: 5
+  StacksToAdd: 5
+  StatusToCauser: 0
+--- !u!114 &2150928288278822733
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6553a753b430a8145a3b84e97a956982, type: 3}
+  m_Name: AttackStatus_Instance
+  m_EditorClassIdentifier: 
+  iconType: 2
+  animType: 2
+  statusType: 5
+  statusCount: 5
+  statusToCauser: 0
 --- !u!114 &6284474480870295530
 MonoBehaviour:
   m_ObjectHideFlags: 1

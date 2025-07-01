@@ -6,7 +6,7 @@ public class TestController : MonoBehaviour
 
     public void OnJump()
     {
-        HandManager.Instance.DrawCard(deck.GetRandomCard(), 1);
+        HandManager.Instance.DrawCard(1);
     }
 
     public void OnInteract()

@@ -15,7 +15,7 @@ MonoBehaviour:
   iconType: 2
   animType: 2
   statusType: 4
-  statusCount: 3
+  statusCount: 2
   statusToCauser: 0
 --- !u!114 &11400000
 MonoBehaviour:
@@ -33,3 +33,21 @@ MonoBehaviour:
   CustomLogic: {fileID: 0}
   effect:
   - effect: {fileID: -8780587319402491743}
+  - effect: {fileID: 4897658579506149711}
+--- !u!114 &4897658579506149711
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 59143ecf99bd32e408eccc375ff2ddec, type: 3}
+  m_Name: Attack_Instance
+  m_EditorClassIdentifier: 
+  iconType: 0
+  animType: 2
+  Damage: 15
+  Attacktimes: 1
+  IgnoreDefense: 0

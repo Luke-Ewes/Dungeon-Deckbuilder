@@ -1,9 +1,9 @@
+using DG.Tweening;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.Events;
 
 public abstract class BaseCharacter : MonoBehaviour, IDamageable
 {
@@ -11,20 +11,24 @@ public abstract class BaseCharacter : MonoBehaviour, IDamageable
 
     protected float currentHealth;
     [SerializeField] protected float maxHealth;
-
-    [SerializeField] protected Animator animController;
+    public float MaxHealth => maxHealth;
 
     public Dictionary<StatusType, int> StatusStacks = new();
 
-    [Header("UI")]
-    public UnityAction<float, float> HealthUpdated;
-    public UnityAction<int, bool, bool> DamageTaken;
-    public UnityAction<StatusType, int> StatusStackAdded;
-    public UnityAction<StatusType, int> StatusStackRemoved;
-    public UnityAction<StatusType> StatusStackEmptied;
+    public event Action<float, float> HealthUpdated;
+    public event Action<int, bool, bool> DamageTaken;
+    public event Action<int> Healed;
+    public event Action<StatusType, int> StatusStackAdded;
+    public event Action<StatusType, int> StatusStackRemoved;
+    public event Action<StatusType> StatusStackEmptied;
+    public event Action<BaseCharacter> Died;
 
+    [SerializeField] protected Animator animController;
     protected bool playingAnimation = false;
     protected ResistStatusEffect resistStatusEffect;
+
+    [Header("Fade")]
+    [SerializeField, Range(1, 5)] private float fadeSpeed;
 
 
     //The logic on startup
@@ -35,6 +39,21 @@ public abstract class BaseCharacter : MonoBehaviour, IDamageable
         resistStatusEffect = GetComponent<ResistStatusEffect>();
 
     }
+
+    protected virtual void OnEnable()
+    {
+        GameManager.Instance.TurnChanged += OnTurnChanged;
+    }
+
+    protected virtual void OnDisable()
+    {
+        GameManager.Instance.TurnChanged -= OnTurnChanged;
+    }
+
+    protected virtual void OnTurnChanged(TurnType oldType, TurnType newType)
+    {
+
+    }
     #endregion
 
     #region Setters
@@ -42,10 +61,14 @@ public abstract class BaseCharacter : MonoBehaviour, IDamageable
     {
         currentHealth = Mathf.Clamp(newValue, 0, maxHealth);
         HealthUpdated?.Invoke(currentHealth, maxHealth);
+        if(currentHealth <= 0)
+        {
+            StartFade();
+        }
     }
     #endregion
 
-    #region Getters
+    #region IDamageable
     public GameObject GetGameObject()
     {
         return gameObject;
@@ -55,9 +78,6 @@ public abstract class BaseCharacter : MonoBehaviour, IDamageable
         return this;
     }
 
-    #endregion
-
-    #region IDamageable
     public virtual void TakeDamage(int damage, bool ignoreDefense, bool strengthUsed)
     {
         int defense = GetStatusValue(StatusType.Defense);
@@ -77,9 +97,41 @@ public abstract class BaseCharacter : MonoBehaviour, IDamageable
         DamageTaken?.Invoke(damage, defended, strengthUsed);
         SetHealth(currentHealth - damage);
     }
-    
+
+    public void Heal(int amount)
+    {
+        if (dead) return;
+        SetHealth(currentHealth + amount);
+        float difference = maxHealth - currentHealth;
+        difference = difference - amount;
+        if (difference < 0) difference = 0;
+        Healed?.Invoke((int)difference);
+    }
+
+    protected virtual void Die()
+    {
+    }
+
+
+    public void StartFade()
+    {
+        Died?.Invoke(this);
+        animController?.SetTrigger("Death");
+        dead = true;
+        Renderer renderer = GetComponentInChildren<Renderer>();
+        Material material = renderer.material; // makes an instance
+
+        Color startColor = material.color;
+        material.DOColor(new Color(startColor.r, startColor.g, startColor.b, 0f), fadeSpeed)
+                .SetEase(Ease.Linear)
+                .OnComplete(() => Die());
+    }
+
+    #region Status
     public virtual void AddStatusStack(StatusType type, int count)
     {
+        if (count == 0) return;
+
         if (StatusStacks.ContainsKey(type))
         {
             StatusStacks[type] += count;
@@ -103,7 +155,6 @@ public abstract class BaseCharacter : MonoBehaviour, IDamageable
             StatusStackRemoved?.Invoke(type, count);
         }
     }
-
     public virtual void EmptyStack(StatusType type)
     {
         if (StatusStacks.ContainsKey(type))
@@ -116,7 +167,7 @@ public abstract class BaseCharacter : MonoBehaviour, IDamageable
     public virtual void EmptyAllStacks()
     {
         var statusStackCopy = StatusStacks.Keys.ToList();
-        for(int i = statusStackCopy.Count -1; i >= 0; i--)
+        for (int i = statusStackCopy.Count - 1; i >= 0; i--)
         {
             EmptyStack(statusStackCopy[i]);
         }
@@ -133,7 +184,7 @@ public abstract class BaseCharacter : MonoBehaviour, IDamageable
 
     public virtual void StatusAttack(StatusType type, int count)
     {
-        if(resistStatusEffect == null)
+        if (resistStatusEffect == null)
         {
             AddStatusStack(type, count);
             return;
@@ -150,6 +201,7 @@ public abstract class BaseCharacter : MonoBehaviour, IDamageable
         }
     }
     #endregion
+    #endregion
 
     #region Animation
 
@@ -165,7 +217,7 @@ public abstract class BaseCharacter : MonoBehaviour, IDamageable
 
     private IEnumerator WaitForAnimation(string animationName)
     {
-        yield return new WaitForSeconds(animController.GetCurrentAnimatorClipInfo(0).Length);
+        yield return new WaitForSeconds(animController.GetCurrentAnimatorClipInfo(0).Length + 1f);
         Debug.Log("Animation Finished " + animationName);
         playingAnimation = false;
     }

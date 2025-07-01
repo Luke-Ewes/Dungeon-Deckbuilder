@@ -15,7 +15,7 @@ MonoBehaviour:
   iconType: 2
   animType: 2
   statusType: 1
-  statusCount: 3
+  statusCount: 2
   statusToCauser: 0
 --- !u!114 &11400000
 MonoBehaviour:

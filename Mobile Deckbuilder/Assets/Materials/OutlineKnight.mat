@@ -55,13 +55,15 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _ClipThreshold: 0.5
+    - _Alpha: 1
+    - _ClipThreshold: 0.1
     - _Outline: 0
     - _OutlineThickness: 0.001
     - _QueueControl: 0
     - _QueueOffset: 0
     - _Use8Directions: 0
     m_Colors:
-    - _OutlineColor: {r: 1, g: 0, b: 0.0030574799, a: 0}
+    - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _OutlineColor: {r: 1, g: 0, b: 0.003921509, a: 0}
   m_BuildTextureStacks: []
   m_AllowLocking: 1

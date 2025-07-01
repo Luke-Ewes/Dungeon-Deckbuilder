@@ -1,57 +1,36 @@
 using TMPro;
 using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class Card : MonoBehaviour
+public abstract class Card : MonoBehaviour, IClickable
 {
     [SerializeField] private TextMeshProUGUI cardName;
     [SerializeField] private Image icon;
     [SerializeField] private TextMeshProUGUI description;
     [SerializeField] private TextMeshProUGUI cost;
 
-    [SerializeField] private CardObject card;
+    public CardObject CardObject { get; private set; }
 
     public void Initialize()
     {
-        cardName.text = card.cardName;
-        icon.sprite = UIManager.Instance.MoveIconSprites[card.IconType];
-        description.text = card.Description;
-        cost.text = card.Cost.ToString();
+        cardName.text = CardObject.cardName;
+        icon.sprite = UIManager.Instance.MoveIconSprites[CardObject.IconType];
+        description.text = CardObject.Description;
+        cost.text = CardObject.Cost.ToString();
     }
 
     public void SetCard(CardObject card)
     {
-        this.card = card;
+        CardObject = card;
     }
 
-    public CardObject GetCard()
+    public virtual bool ValidateClick()
     {
-        return card;
+        return false;
     }
 
-    /// <summary>
-    /// Plays the card on the target IDamageable.
-    /// </summary>
-    /// <param name="target"></param>
-    /// <param name="causer"></param>
-    public void PlayCard(IDamageable target, IDamageable causer)
+    public virtual void ExecuteClick()
     {
-        card.PlayCard(target, causer);
-    }
-
-    /// <summary>
-    /// Checks if the card can be dropped on a given drop zone.
-    /// </summary>
-    /// <param name="dropZone"></param>
-    /// <returns></returns>
-    public bool CanDropOn(IDropZone dropZone)
-    {
-        return dropZone.IsDropAllowed(this);
-    }
-
-    public void OnCardTapped()
-    {
-        HandManager.Instance.SelectCard(this);
+        
     }
 }

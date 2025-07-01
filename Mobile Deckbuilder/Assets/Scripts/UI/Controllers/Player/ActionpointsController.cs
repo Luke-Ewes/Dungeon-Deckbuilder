@@ -13,11 +13,18 @@ public class ActionpointsController : MonoBehaviour
         UpdateActionPoints(player.GetActionPoints());
     }
 
-    private void OnDestroy()
+    private void OnEnable()
+    {
+        if (player != null)
+        {
+            SubToActions();
+        }
+    }
+
+    private void OnDisable()
     {
         UnsubToActions();
     }
-
 
     public void UpdateActionPoints(int newValue)
     {

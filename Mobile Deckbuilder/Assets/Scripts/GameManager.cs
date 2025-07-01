@@ -1,39 +1,40 @@
+using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
-using UnityEngine.SceneManagement;
 
 public enum TurnType { Player, Enemy, NoCombat }
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
 
-    [SerializeField] private PlayerController player;
+    private PlayerController player;
 
-    public UnityAction<TurnType> TurnChanged;
-    private TurnType turnType;
+    public UnityAction<TurnType, TurnType> TurnChanged;
+    private static TurnType turnType = TurnType.NoCombat;
 
     public Accelerometer Accelerometer { get; private set; }
-    public string micDevice { get; private set; } = string.Empty;
+    public string MicDevice { get; private set; } = string.Empty;
     public WebCamTexture CamTexture { get; private set; }
+
+    public static Action StartCombat;
+    public static Action EndCombat;
+    public static Action LoadNewScene;
+
+    public static bool isBossFight = false;
 
     private void Awake()
     {
         if (Instance != null && Instance != this)
         {
-            Destroy(this);
+            Destroy(gameObject);
         }
         else
         {
             Instance = this;
         }
-    }
-
-    private void Start()
-    {
-        // Initialize the game state
-        SetTurnType(TurnType.Player);
+        DontDestroyOnLoad(gameObject);
     }
 
     #region Getters and Setters
@@ -44,14 +45,12 @@ public class GameManager : MonoBehaviour
     /// <returns></returns>
     public static TurnType GetTurnType()
     {
-        return Instance.turnType;
+        return turnType;
     }
 
     private static void SetTurnType(TurnType newType)
     {
-
-        Instance.turnType = newType;
-
+        turnType = newType;
     }
 
     /// <summary>
@@ -60,10 +59,21 @@ public class GameManager : MonoBehaviour
     /// <param name="newType"></param>
     public static void ChangeTurn(TurnType newType)
     {
-        if (Instance.turnType != newType)
+        TurnType oldType = turnType;
+        if (oldType != newType)
         {
             SetTurnType(newType);
-            Instance.StartCoroutine(TurnDelay(newType));
+            Instance.TurnChanged?.Invoke(oldType, newType);
+        }
+    }
+
+    public static void ChangeTurnDelayed(TurnType newType)
+    {
+        TurnType oldType = turnType;
+        if (oldType != newType)
+        {
+            SetTurnType(newType);
+            Instance.StartCoroutine(TurnDelay(oldType, newType));
         }
     }
 
@@ -71,16 +81,57 @@ public class GameManager : MonoBehaviour
     {
         return Instance.player.GetActionPoints();
     }
+    public static void SetPlayer(PlayerController newPlayer)
+    {
+        Instance.player = newPlayer;
+    }
 
     public static PlayerController GetPlayer()
     {
+        if(Instance.player == null)
+        {
+            Instance.player = FindAnyObjectByType<PlayerController>();
+        }
         return Instance.player;
     }
 
-    private static IEnumerator TurnDelay(TurnType newType)
+    public static void OnStartCombat()
+    {
+        ChangeTurn(TurnType.Player);
+        StartCombat?.Invoke();
+        Debug.Log("Start Combat");
+    }
+
+    public static void EndBossFight()
+    {
+
+    }
+
+    public static void OnEndCombat()
+    {
+        ChangeTurn(TurnType.NoCombat);
+        EndCombat?.Invoke();
+        Debug.Log("End Combat");
+        CardManager.Instance.StartCardPick(3, new Vector2(Screen.width / 2, Screen.height / 2));
+        CardManager.Instance.PickEnded += Instance.ReturnToMap;
+    }
+
+    public static void LoadScene(string sceneName)
+    {
+        LoadNewScene?.Invoke();
+        levelLoader.LoadNewScene(sceneName);
+    }
+
+    private void ReturnToMap()
+    {
+        CardManager.Instance.PickEnded -= Instance.ReturnToMap;
+        LoadScene("MapScene");
+    }
+
+    private static IEnumerator TurnDelay(TurnType oldType, TurnType newType)
     {
         yield return new WaitForSeconds(1f);
-        Instance.TurnChanged?.Invoke(newType);
+        Instance.TurnChanged?.Invoke(oldType, newType);
     }
 
     public static bool HasAccelerometer(out Accelerometer accelerometer)
@@ -97,15 +148,15 @@ public class GameManager : MonoBehaviour
 
     public static bool HasMicrophone(out string microphone)
     {
-        if (Instance.micDevice != string.Empty)
+        if (Instance.MicDevice != string.Empty)
         {
-            microphone = Instance.micDevice;
+            microphone = Instance.MicDevice;
             return true;
         }
         if (Microphone.devices.Length > 0)
         {
-            Instance.micDevice = Microphone.devices[0];
-            microphone = Instance.micDevice;
+            Instance.MicDevice = Microphone.devices[0];
+            microphone = Instance.MicDevice;
             return true;
         }
         else
@@ -122,7 +173,7 @@ public class GameManager : MonoBehaviour
 
     public static bool HasFrontCam(out WebCamTexture camTexture)
     {
-        if(Instance.CamTexture != null)
+        if (Instance.CamTexture != null)
         {
             camTexture = Instance.CamTexture;
             return true;

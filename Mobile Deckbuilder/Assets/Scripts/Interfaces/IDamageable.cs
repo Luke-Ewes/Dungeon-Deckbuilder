@@ -11,4 +11,5 @@ public interface IDamageable
     public void EmptyAllStacks();
     public int GetStatusValue(StatusType type);
     public void StatusAttack(StatusType type, int count);
+    public void Heal(int amount);
 }

@@ -23,13 +23,13 @@ public class EndTurnButton : MonoBehaviour
 
     private void OnEndTurnButtonClicked()
     {
-  
         GameManager.ChangeTurn(TurnType.Enemy);
+        HandManager.Instance.DeselectCard();
     }
 
-    private void OnturnChanged(TurnType type)
+    private void OnturnChanged(TurnType oldType, TurnType newType)
     {
-        if(type == TurnType.Player)
+        if(newType == TurnType.Player)
         {
             button.interactable = true;
         }

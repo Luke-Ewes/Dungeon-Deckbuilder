@@ -11,7 +11,7 @@ public enum MoveType
     Self = 1 << 3   // 7
 }
 
-[CreateAssetMenu(fileName = "new Card", menuName = "Scriptable Objects/Card")]
+[CreateAssetMenu(fileName = "new CardObject", menuName = "Scriptable Objects/CardObject")]
 public class CardObject : ScriptableObject
 {
     public string cardName;

@@ -39,9 +39,9 @@ public class IntentContainerController : MonoBehaviour
         }
     }
 
-    private void DestroyIntents(TurnType type)
+    private void DestroyIntents(TurnType oldType, TurnType newType)
     {
-        if(type == TurnType.Enemy)
+        if(newType == TurnType.Enemy)
         {
             foreach(IntentController intent in intents)
             {

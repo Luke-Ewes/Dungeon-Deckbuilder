@@ -1,12 +1,12 @@
+using System;
 using UnityEngine;
-using UnityEngine.EventSystems;
-using UnityEngine.UI;
-public class DropZone : MonoBehaviour, IDropZone, IPointerClickHandler
+public class DropZone : MonoBehaviour, IClickable
 {
     [Tooltip("The card types that will be allowed to drop on this zone")]
     public MoveType AllowedType;// Define this per zone in inspector
 
     private Material highlightMaterial;
+    public Action<DropZone> Destroyed;
 
     private void Start()
     {
@@ -17,18 +17,15 @@ public class DropZone : MonoBehaviour, IDropZone, IPointerClickHandler
             Debug.LogError("No material found on DropZone. Please assign a material with an outline shader.");
         }
     }
-    public bool IsDropAllowed(Card card)
+
+    private void OnEnable()
     {
-        return (AllowedType & card.GetCard().CardType) != 0;
+        SubToActions();
     }
 
-    public void OnPointerClick(PointerEventData eventData)
+    public bool IsDropAllowed(Card card)
     {
-        Card selected = HandManager.Instance.GetSelectedCard();
-        if (selected == null) return;
-        if (!IsDropAllowed(selected)) return;
-
-        HandManager.Instance.PlaySelectedCardOn(this);
+        return (AllowedType & card.CardObject.CardType) != 0;
     }
 
     public void SetHighlight(bool highlight)
@@ -44,14 +41,27 @@ public class DropZone : MonoBehaviour, IDropZone, IPointerClickHandler
         }
     }
 
-    public GameObject GetGameObject()
+    private void Destroy(BaseCharacter character)
     {
-        return gameObject;
+        character.Died -= Destroy;
+        Destroyed?.Invoke(this);
     }
-}
-public interface IDropZone
-{
-    bool IsDropAllowed(Card card);
-    GameObject GetGameObject();
+
+    private void SubToActions()
+    {
+        GetComponent<BaseCharacter>().Died += Destroy;
+    }
+
+    public bool ValidateClick()
+    {
+        if (HandManager.Instance.SelectedCard == null || GameManager.GetTurnType() == TurnType.Enemy) return false;
+
+        return true;
+    }
+
+    public void ExecuteClick()
+    {
+        HandManager.Instance.HandleClick(this);
+    }
 }
 

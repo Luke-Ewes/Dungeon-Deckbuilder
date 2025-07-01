@@ -6,17 +6,17 @@ public class HitTextController : MonoBehaviour
 
     private void Awake()
     {
-       character = GetComponentInParent<BaseCharacter>();
+        character = GetComponentInParent<BaseCharacter>();
     }
 
     private void OnEnable()
     {
-        character.DamageTaken += OnDamageTaken;
+        SubToActions();
     }
 
     private void OnDisable()
     {
-        character.DamageTaken -= OnDamageTaken;
+        UnsubFromActions(character);
     }
 
     private void OnDamageTaken(int value, bool Defended, bool isCrit = false)
@@ -35,5 +35,25 @@ public class HitTextController : MonoBehaviour
             color = Color.blue; // blue for defended hits
         }
         HitText.CreateHitText(value, transform, color, isCrit);
+    }
+
+    private void OnHealed(int value)
+    {
+        Color color = Color.green; // Green for healing
+        HitText.CreateHitText(value, transform, color);
+    }
+
+    private void SubToActions()
+    {
+        character.DamageTaken += OnDamageTaken;
+        character.Healed += OnHealed;
+        character.Died += UnsubFromActions;
+    }
+
+    private void UnsubFromActions(BaseCharacter character)
+    {
+        character.Died -= UnsubFromActions;
+        character.Healed -= OnHealed;
+        character.DamageTaken -= OnDamageTaken;
     }
 }

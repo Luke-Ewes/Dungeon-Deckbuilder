@@ -14,14 +14,16 @@ public class HandManager : MonoBehaviour
     [Tooltip("Point cards come from when being drawn"), SerializeField] private Transform startPoint;
     [Tooltip("Point cards dissapear to when discarded"), SerializeField] private Transform EndPoint;
 
-    private List<Card> handCards = new();
+    private List<PlayableCard> handCards = new();
 
     [SerializeField] private Canvas canvas;
     private RectTransform canvasRect;
 
-    public UnityAction<Card> PlayedCard;
+    public UnityAction<PlayableCard> PlayedCard;
 
-    private Card selectedCard;
+    public PlayableCard SelectedCard { get; private set; }
+
+    private DropZone[] dropZones;
 
     private void Awake()
     {
@@ -44,7 +46,7 @@ public class HandManager : MonoBehaviour
     private void OnDisable()
     {
         GameManager.Instance.TurnChanged -= OnTurnChanged;
-        GameManager.GetPlayer().ActionPointsChanged += UpdateAvailableCards;
+        GameManager.GetPlayer().ActionPointsChanged -= UpdateAvailableCards;
     }
 
     private void Start()
@@ -64,18 +66,18 @@ public class HandManager : MonoBehaviour
         }
         canvasRect = canvas.GetComponent<RectTransform>();
 
-        DrawCard(CardDeck.Instance.GetRandomCard(), 8);
+        DrawCard(8);
     }
 
     /// <summary>
     /// Draws a card from the deck and adds it to the hand.
     /// </summary>
     /// <param name="card"></param>
-    public void DrawCard(Card card, int amountToDraw)
+    public void DrawCard(int amountToDraw)
     {
         for (int i = 0; i < amountToDraw; i++)
         {
-            card = CardDeck.Instance.GetRandomCard();
+            PlayableCard card = CardDeck.Instance.GetRandomCard();
             if (handCards.Count >= maxHandSize) return;
 
             card.gameObject.SetActive(true);
@@ -83,7 +85,6 @@ public class HandManager : MonoBehaviour
 
             card.transform.position = startPoint.position;
 
-            SubscribeToCardActions(card);
             UpdateCardPositions();
         }
 
@@ -144,13 +145,21 @@ public class HandManager : MonoBehaviour
     /// Discards a card from the hand, removing it from the list and unsubscribing from its actions.
     /// </summary>
     /// <param name="card"></param>
-    public void DiscardCard(Card card)
+    public void DiscardCard(PlayableCard card)
     {
         handCards.Remove(card);
-        UnSubscribeToCardActions(card);
         FloatOffScreen(card);
-
+        CardDeck.Instance.ReturnToDeck(card.CardObject);
         UpdateCardPositions(); // Realign remaining cards
+    }
+
+    private void DiscardFullHand()
+    {
+        foreach (PlayableCard card in handCards)
+        {
+            FloatOffScreen(card);
+        }
+        handCards.Clear();
     }
 
     /// <summary>
@@ -178,7 +187,7 @@ public class HandManager : MonoBehaviour
         // Animate card to discard area
         cardRect.DOAnchorPos(localPoint, 0.25f)
             .SetEase(Ease.InBack)
-            .OnComplete(() => card.gameObject.SetActive(false));
+            .OnComplete(() => Destroy(card.gameObject));
     }
 
     /// <summary>
@@ -188,7 +197,7 @@ public class HandManager : MonoBehaviour
     {
         foreach (Card card in handCards)
         {
-            if (newPoints < card.GetCard().Cost)
+            if (newPoints < card.CardObject.Cost)
             {
                 card.GetComponent<CanvasGroup>().alpha = 0.5f;
             }
@@ -199,14 +208,14 @@ public class HandManager : MonoBehaviour
         }
     }
 
-    public void SelectCard(Card card)
+    public void SelectCard(PlayableCard card)
     {
-        if (selectedCard != null)
+        if (SelectedCard != null)
         {
             DeselectCard();
         }
 
-        selectedCard = card;
+        SelectedCard = card;
         CenterCard(card);
 
         HighlightEligibleDropZones(card, true);
@@ -214,41 +223,46 @@ public class HandManager : MonoBehaviour
 
     public void DeselectCard()
     {
-        if (selectedCard == null) return;
+        if (SelectedCard == null) return;
 
-        ResetCardPosition(selectedCard);
-        HighlightEligibleDropZones(selectedCard, false);
+        ResetCardPosition(SelectedCard);
+        HighlightEligibleDropZones(SelectedCard, false);
 
-        selectedCard = null;
+        SelectedCard = null;
     }
 
-    private void HighlightEligibleDropZones(Card card, bool highlight)
+    private void HighlightEligibleDropZones(PlayableCard card, bool highlight)
     {
-        foreach (DropZone dropZone in FindObjectsByType<DropZone>(FindObjectsSortMode.None))
+        if (dropZones == null || dropZones.Length == 0)
         {
+            SetDropZones(); // Ensure drop zones are set if not already
+        }
+
+        foreach (DropZone dropZone in dropZones)
+        {
+            if (dropZone == null) continue;
             dropZone.SetHighlight(highlight && dropZone.IsDropAllowed(card));
         }
     }
 
-    public Card GetSelectedCard()
+    public void PlaySelectedCardOn(DropZone zone)
     {
-        return selectedCard;
-    }
-
-    public void PlaySelectedCardOn(IDropZone zone)
-    {
-        if (selectedCard == null) return;
+        if (SelectedCard == null) return;
+        PlayableCard card = SelectedCard;
 
         // Cast zone to interface with target
-        IDamageable damageable = zone.GetGameObject().GetComponent<IDamageable>();
+        IDamageable target = zone.gameObject.GetComponent<IDamageable>();
 
-        ValidDrop(selectedCard, damageable);
-        selectedCard = null;
+        card.PlayCard(target, GameManager.GetPlayer());
+        DiscardCard(card);
+        PlayedCard?.Invoke(card);
+        UpdateCardPositions();
 
+        SelectedCard = null;
         HighlightEligibleDropZones(null, false);
     }
 
-    private void CenterCard(Card card)
+    private void CenterCard(PlayableCard card)
     {
         RectTransform cardRect = card.GetComponent<RectTransform>();
         cardRect.DOAnchorPos(Vector2.zero, 0.3f).SetEase(Ease.OutBack);
@@ -261,70 +275,47 @@ public class HandManager : MonoBehaviour
         UpdateCardPositions(); // Resnap the whole hand
     }
 
-
-    /*private void CardPickedUp(Card card)
-    {
-        card.transform.DOLocalRotateQuaternion(Quaternion.Euler(0, 0, 0), 0.25f);
-    }*/
-
-    private void InValidDrop(Card card)
-    {
-        UpdateCardPositions();
-    }
-
-    private void ValidDrop(Card card, IDamageable target)
-    {
-        card.PlayCard(target, GameManager.GetPlayer());
-        DiscardCard(card);
-        PlayedCard?.Invoke(card);
-        UpdateCardPositions();
-        if (handCards.Count == 0)
-        {
-            DrawCard(CardDeck.Instance.GetRandomCard(), 8);
-        }
-    }
-    
     /// <summary>
     /// Gets a random card from the hand.
     /// </summary>
     /// <returns></returns>
     /// <exception cref="System.Exception"></exception>
-    public Card GetRandomHandCard()
+    public PlayableCard GetRandomHandCard()
     {
         if (handCards.Count == 0)
             throw new System.Exception("Tried to get a random card, but hand is empty.");
         return handCards[Random.Range(0, handCards.Count)];
     }
 
-    private void OnTurnChanged(TurnType type)
+    private void OnTurnChanged(TurnType oldType, TurnType newType)
     {
-        if (type == TurnType.Player)
+        if (newType == TurnType.Player)
+        {   
+            DrawCard(3);
+        }
+        else if (newType == TurnType.NoCombat)
         {
-            DrawCard(CardDeck.Instance.GetRandomCard(), 3);
+            DiscardFullHand();
         }
     }
 
-    /// <summary>
-    /// Subscribes to the actions of a card, allowing it to respond to drag events.
-    /// </summary>
-    /// <param name="card"></param>
-    private void SubscribeToCardActions(Card card)
+    private void SetDropZones()
     {
-        CardDraghandler dragHandler = card.GetComponent<CardDraghandler>();
-        //dragHandler.PickedUpAction += CardPickedUp;
-        //dragHandler.InValidDropAction += InValidDrop;
-        //dragHandler.ValidDropAction += ValidDrop;
+        dropZones = FindObjectsByType<DropZone>(FindObjectsSortMode.None);
     }
 
-    /// <summary>
-    /// Unsubscribes from the actions of a card, preventing it from responding to drag events.
-    /// </summary>
-    /// <param name="card"></param>
-    private void UnSubscribeToCardActions(Card card)
+    public void HandleClick(DropZone dropZone)
     {
-        CardDraghandler dragHandler = card.GetComponent<CardDraghandler>();
-        //dragHandler.PickedUpAction -= CardPickedUp;
-        //dragHandler.InValidDropAction -= InValidDrop;
-        //dragHandler.ValidDropAction -= ValidDrop;
+        if (dropZone.IsDropAllowed(SelectedCard))
+        {
+            PlaySelectedCardOn(dropZone);
+        }
+        else
+        {
+            // If the drop zone is not valid, reset the card position and deselect
+            ResetCardPosition(SelectedCard);
+            HighlightEligibleDropZones(SelectedCard, false);
+            SelectedCard = null;
+        }
     }
 }

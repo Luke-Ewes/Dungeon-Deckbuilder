@@ -5,7 +5,9 @@ public class CardDeck : MonoBehaviour
 {
     public static CardDeck Instance;
 
-    public List<Card> currentDeck = new();
+    public List<CardObject> currentDeck;
+    private List<CardObject> drawPile;
+    private List<CardObject> discardPile = new();
 
     [Tooltip("The cards the player starts the game with"),SerializeField] private StartingDeck startingDeck;
 
@@ -21,9 +23,21 @@ public class CardDeck : MonoBehaviour
         {
             Instance = this;
         }
+        LoadData(); 
     }
+
     private void Start()
     {
+        if(currentDeck.Count == 0)
+        {
+            InitializeDeck();
+        }
+        drawPile = new List<CardObject>(currentDeck);
+
+    }
+    private void InitializeDeck()
+    {
+        currentDeck = new();
         foreach (var pair in startingDeck.startingCards)
         {
             for (int i = 0; i < pair.Value; i++)
@@ -31,6 +45,26 @@ public class CardDeck : MonoBehaviour
                 AddCardToDeck(pair.Key);
             }
         }
+    }
+
+    private void OnEnable()
+    {
+        GameManager.LoadNewScene += SaveData;
+    }
+
+    private void OnDisable()
+    {
+        GameManager.LoadNewScene -= SaveData;
+    }
+
+    private void SaveData()
+    {
+        PlayerInfo.Instance.currentDeck = currentDeck;
+    }
+
+    private void LoadData()
+    {
+        currentDeck = PlayerInfo.Instance.currentDeck;
     }
 
     /// <summary>
@@ -41,11 +75,7 @@ public class CardDeck : MonoBehaviour
     {
         if (CanAddToDeck())
         {
-            Card newCard = Instantiate(CardManager.Instance.CardTemplate, transform);
-            newCard.SetCard(card);
-            newCard.Initialize();
-            newCard.gameObject.SetActive(false);
-            currentDeck.Add(newCard);
+            currentDeck.Add(card);
         }
     }
 
@@ -62,24 +92,37 @@ public class CardDeck : MonoBehaviour
     /// Returns a random card from the deck that is not currently active.
     /// </summary>
     /// <returns></returns>
-    public Card GetRandomCard()
+    public PlayableCard GetRandomCard()
     {
-        bool pickedRandom = false;
-        int tries = 0;
-        Card card = null;
-        while (pickedRandom == false && tries < 100)
+        CardObject card = null;
+        if(drawPile.Count == 0)
         {
-            card = currentDeck[Random.Range(0, currentDeck.Count)];
-            if (card.isActiveAndEnabled)
+            // If the draw pile is empty, shuffle the discard pile back into the draw pile
+            if (discardPile.Count > 0)
             {
-                tries++;
-                continue;
+                drawPile.AddRange(discardPile);
+                discardPile.Clear();
             }
             else
             {
-                pickedRandom = true;
+                Debug.LogWarning("No cards left to draw from.");
+                return null; // No cards available to draw
             }
         }
-        return card;
+
+        card = drawPile[Random.Range(0, drawPile.Count)];
+
+        PlayableCard newCard = Instantiate(CardManager.Instance.CardTemplate, transform);
+        newCard.SetCard(card);
+        newCard.Initialize();
+        newCard.gameObject.SetActive(false);
+        drawPile.Remove(card);
+
+        return newCard;
+    }
+
+    public void ReturnToDeck(CardObject card)
+    {
+        discardPile.Add(card);
     }
 }

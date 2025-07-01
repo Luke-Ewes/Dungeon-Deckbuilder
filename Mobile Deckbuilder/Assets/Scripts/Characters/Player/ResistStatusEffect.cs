@@ -161,23 +161,23 @@ public class ResistStatusEffect : MonoBehaviour
         StatusUIHandler.StartFireUI();
         // Try to start microphone recording
         AudioClip micInput = null;
-        string micDevice = string.Empty;
-        if (GameManager.HasMicrophone(out micDevice))
+        string MicDevice = string.Empty;
+        if (GameManager.HasMicrophone(out MicDevice))
         {
-            micInput = Microphone.Start(micDevice, true, 1, 44100);
+            micInput = Microphone.Start(MicDevice, true, 1, 44100);
             yield return new WaitForSeconds(0.1f); // Let mic warm up
         }
 
         while (timer < resistTime && !blowDetected)
         {
             timer += Time.deltaTime;
-            blowDetected = DetectBlow(micInput, micDevice);
+            blowDetected = DetectBlow(micInput, MicDevice);
             yield return null;
         }
 
         // Stop microphone if we were using it
-        if (micInput != null && Microphone.IsRecording(micDevice))
-            Microphone.End(micDevice);
+        if (micInput != null && Microphone.IsRecording(MicDevice))
+            Microphone.End(MicDevice);
 
         StatusUIHandler.StopFireUI();
 
@@ -221,15 +221,15 @@ public class ResistStatusEffect : MonoBehaviour
         return shakeDetected;
     }
 
-    private bool DetectBlow(AudioClip micInput, string micDevice)
+    private bool DetectBlow(AudioClip micInput, string MicDevice)
     {
         float micThreshold = 0.1f; // Adjust based on testing
 
        
-        if (micDevice != string.Empty && Microphone.IsRecording(micDevice))
+        if (MicDevice != string.Empty && Microphone.IsRecording(MicDevice))
         {
             float[] samples = new float[128];
-            int micPos = Microphone.GetPosition(micDevice);
+            int micPos = Microphone.GetPosition(MicDevice);
             int startPos = Mathf.Max(0, micPos - samples.Length);
             micInput.GetData(samples, startPos);
 

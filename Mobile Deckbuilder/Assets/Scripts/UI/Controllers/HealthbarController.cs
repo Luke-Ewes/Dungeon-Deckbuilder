@@ -12,17 +12,29 @@ public class HealthbarController : MonoBehaviour
 
     private void Awake()
     {
-        character.HealthUpdated += UpdateHealthBar;
+        SubToActions();
     }
 
     private void OnDestroy()
     {
-        character.HealthUpdated -= UpdateHealthBar;
+        UnsubFromActions(character);
     }
 
     private void UpdateHealthBar(float currentHealth, float maxHealth)
     {
         fillImage.fillAmount = currentHealth / maxHealth;
         healthbarText.text = $"{currentHealth} / {maxHealth}";
+    }
+
+    private void SubToActions()
+    {
+        character.HealthUpdated += UpdateHealthBar;
+        character.Died += UnsubFromActions;
+    }
+
+    private void UnsubFromActions(BaseCharacter character)
+    {
+        character.Died -= UnsubFromActions;
+        character.HealthUpdated -= UpdateHealthBar;
     }
 }

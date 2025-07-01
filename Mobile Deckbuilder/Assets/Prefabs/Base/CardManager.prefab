@@ -1,0 +1,65 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &786045351857703914
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2235863685959699996}
+  - component: {fileID: 5887565650629773316}
+  m_Layer: 0
+  m_Name: CardManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2235863685959699996
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 786045351857703914}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1486.6682, y: 489.8533, z: -11.342629}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5887565650629773316
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 786045351857703914}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 020832889e8d5c447940d515af3207bd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  allCards:
+  - {fileID: 11400000, guid: 6682ae8be2b69544d8c3d616e601e810, type: 2}
+  - {fileID: 11400000, guid: ddd6cd7213a3f2c4aa7079e48127f6c0, type: 2}
+  - {fileID: 11400000, guid: c700bd732fe02314faa1bf74835d7a86, type: 2}
+  - {fileID: 11400000, guid: 54d5a6eb5095a8b4ebd7287d8badecb5, type: 2}
+  - {fileID: 11400000, guid: 4e82c4035275c0048bf96431c8920a7f, type: 2}
+  - {fileID: 11400000, guid: e232e69ec7be9cd4cb010b9a03c375a3, type: 2}
+  - {fileID: 11400000, guid: aeffe2a4a60fc4d4b990c8803cec4dae, type: 2}
+  - {fileID: 11400000, guid: 03133026887e56a4c87ea6b7c012ffa4, type: 2}
+  - {fileID: 11400000, guid: 733887fbd94e17b459e231b3c28b1fcb, type: 2}
+  - {fileID: 11400000, guid: bf526ff710b18274c8f90a052379a4ad, type: 2}
+  - {fileID: 11400000, guid: 3961f94e4dc741d429be21bb3b7cb98d, type: 2}
+  - {fileID: 11400000, guid: fbdab521d8bbc7041bf497fdffec2352, type: 2}
+  - {fileID: 11400000, guid: 2dafc9a9bb4feda4486f8f825dd72198, type: 2}
+  CardTemplate: {fileID: 4950917866351439074, guid: 9948fb65b7c008f41a878a28bf1fae05, type: 3}
+  ShowcaseCard: {fileID: 1672883341732942642, guid: 5a49dbcd77fd13d41a95905f0dbd15e0, type: 3}
+  canvas: {fileID: 0}
+  cardSpacing: 500
+  arcHeight: 200

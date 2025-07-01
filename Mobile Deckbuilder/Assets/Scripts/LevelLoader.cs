@@ -30,7 +30,7 @@ public  class levelLoader : MonoBehaviour
         animator.SetTrigger("StartFade");
         var info = animator.GetCurrentAnimatorStateInfo(0);
         yield return new WaitForSeconds(info.length);
-        SceneManager.LoadScene("MainScene");
+        SceneManager.LoadScene(sceneName);
     }
 
     private static Animator GetAnimator()

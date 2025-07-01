@@ -12,7 +12,7 @@ public class AddDefense : EffectBase
 		targetValue += causer.GetStatusValue(StatusType.Dexterity);
         if (causer.GetStatusValue(StatusType.Water) != 0)
 		{
-			targetValue /= 2;
+			Mathf.CeilToInt(targetValue /= 2);
 		}
 		if (!defenseToCauser)
 		{

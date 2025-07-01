@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2ff99ff5a778aa54a94f111f6ec8ce48, type: 3}
+  m_Name: Mushrooms
+  m_EditorClassIdentifier: 
+  Enemies:
+  - {fileID: 3069450754037904517, guid: 5964e7d6010c31948a9bd8194e498845, type: 3}
+  - {fileID: 3069450754037904517, guid: 5964e7d6010c31948a9bd8194e498845, type: 3}

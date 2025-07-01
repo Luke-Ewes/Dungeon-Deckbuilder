@@ -15,6 +15,10 @@ public class UIManager : MonoBehaviour
         SerializedDictionary("IconType", "Sprite")]
     public SerializedDictionary<IconType, Sprite> MoveIconSprites;
 
+    [Tooltip("The icon corresponding to each NodeType"),
+        SerializedDictionary("NodeType", "Sprite")]
+    public SerializedDictionary<NodeType, Sprite> NodeIcons;
+
     public HitText HitTextPF;
 
     private void Awake()
@@ -27,6 +31,7 @@ public class UIManager : MonoBehaviour
         {
             Instance = this;
         }
+        DontDestroyOnLoad(gameObject);
     }
 
     /*public void ShowShakePrompt(string message)

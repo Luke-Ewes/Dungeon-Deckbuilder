@@ -9,8 +9,17 @@ EditorBuildSettings:
     path: Assets/Scenes/StartScene.unity
     guid: 07d9a797e92fe0b4588f1a6a57cda94d
   - enabled: 1
-    path: Assets/Scenes/MainScene.unity
+    path: Assets/Scenes/CombatScene.unity
     guid: 8c9cfa26abfee488c85f1582747f6a02
+  - enabled: 1
+    path: Assets/Scenes/MapScene.unity
+    guid: cce28081db63dfe49a155901708480f6
+  - enabled: 1
+    path: Assets/Scenes/TreasureScene.unity
+    guid: 0d58d3df85c0cb640ad3a67ef3cb03c8
+  - enabled: 1
+    path: Assets/Scenes/CampfireScene.unity
+    guid: 6ae0870a99fb64443bc94c51a4ec0b4d
   m_configObjects:
     com.unity.adaptiveperformance.google.android.provider_settings: {fileID: 11400000, guid: 209286c7d2827e24eb556059d60ece7c, type: 2}
     com.unity.adaptiveperformance.loader_settings: {fileID: 11400000, guid: 32ccca2168ab15d489f24a2ee9cbb60b, type: 2}

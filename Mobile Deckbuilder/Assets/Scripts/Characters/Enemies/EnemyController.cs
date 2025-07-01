@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -7,28 +8,25 @@ public abstract class EnemyController : BaseCharacter
     [Header("Enemy")]
     [SerializeField] protected EnemyMove[] possibleMoves;
 
-    private EnemyMove nextMove; 
+    private EnemyMove nextMove;
 
     public UnityAction<EnemyMove> MoveSelected;
+    private bool isFinished;
+
+    public bool isFlying = false;
 
     protected override void Start()
     {
         base.Start();
-        SetNextMove();
-    }
-
-    private void OnEnable()
-    {
-        GameManager.Instance.TurnChanged += OnTurnSwitch;
-    }
-    private void OnDisable()
-    {
-        GameManager.Instance.TurnChanged -= OnTurnSwitch;
     }
 
     public void StartMoves()
     {
-        StartCoroutine(ExecuteMoves());
+        if (!dead)
+        {
+            isFinished = false;
+            StartCoroutine(ExecuteMoves());
+        }
     }
 
     private IEnumerator ExecuteMoves()
@@ -46,6 +44,13 @@ public abstract class EnemyController : BaseCharacter
                 yield return new WaitForSeconds(2f);
             }
         }
+
+        isFinished = true;
+    }
+
+    public bool IsFinished()
+    {
+        return isFinished;
     }
 
     private void SetNextMove()
@@ -54,12 +59,40 @@ public abstract class EnemyController : BaseCharacter
         MoveSelected?.Invoke(nextMove);
     }
 
-    private void OnTurnSwitch(TurnType type)
+    protected override void OnTurnChanged(TurnType oldType, TurnType newType)
     {
-        if (type == TurnType.Player)
+        base.OnTurnChanged(oldType, newType);
+        if (newType == TurnType.Player)
         {
             SetNextMove();
         }
+        else if(newType == TurnType.Enemy)
+        {
+            for (int i = StatusStacks.Count - 1; i >= 0; i--)
+            {
+                StatusType type = StatusStacks.Keys.ElementAt(i);
+
+                if (type == StatusType.Defense)
+                {
+                    EmptyStack(StatusType.Defense);
+                    continue;
+                }
+                else if (type == StatusType.Fire)
+                {
+                    TakeDamage(StatusStacks[type], true, false);
+                }
+                if (StatusStacks[type] > 0)
+                {
+                    RemoveStatusStack(type, 1);
+                }
+            }
+        }
+    }
+
+    protected override void Die()
+    {
+        base.Die();
+        Destroy(gameObject);
     }
 
 }
