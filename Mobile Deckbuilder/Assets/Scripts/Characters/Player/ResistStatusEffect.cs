@@ -108,7 +108,7 @@ public class ResistStatusEffect : MonoBehaviour
 
                 avgBrightness /= (pixels.Length / 20f);
 
-                if (avgBrightness < 0.5f) // Covered = low brightness
+                if (avgBrightness < 0.55f) // Covered = low brightness
                 {
                     coverTimer += Time.deltaTime;
                     Debug.Log(coverTimer);
@@ -200,10 +200,10 @@ public class ResistStatusEffect : MonoBehaviour
 
         // If acceleration exceeds threshold, count as a shake
         bool shakeDetected = false;
-        Accelerometer accelerometer = null;
-        if (GameManager.HasAccelerometer(out accelerometer))
+        if (GameManager.HasAccelerometer())
         {
-            Vector3 acceleration = accelerometer.acceleration.ReadValue();
+            Vector3 acceleration = Accelerometer.current.acceleration.ReadValue();
+            Debug.Log(acceleration);
             if (acceleration.sqrMagnitude > shakeThreshold * shakeThreshold)
             {
                 shakeDetected = true;

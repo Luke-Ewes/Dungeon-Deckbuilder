@@ -35,9 +35,15 @@ public class GameManager : MonoBehaviour
             Instance = this;
         }
         DontDestroyOnLoad(gameObject);
+        SetSensors();
     }
 
     #region Getters and Setters
+
+    private void Start()
+    {
+       
+    }
 
     /// <summary>
     /// Get the current turn type of the game (Player, Enemy, or NoCombat).
@@ -99,12 +105,14 @@ public class GameManager : MonoBehaviour
     {
         ChangeTurn(TurnType.Player);
         StartCombat?.Invoke();
-        Debug.Log("Start Combat");
+        OnScreenLogger.LogMessage("Start Combat");
     }
 
     public static void EndBossFight()
     {
-
+        ChangeTurn(TurnType.NoCombat);
+        EndCombat?.Invoke();
+        LoadScene("EndScene");
     }
 
     public static void OnEndCombat()
@@ -136,6 +144,11 @@ public class GameManager : MonoBehaviour
 
     public static bool HasAccelerometer(out Accelerometer accelerometer)
     {
+        if (!Application.isMobilePlatform)
+        {
+            accelerometer = null;
+            return false;
+        }
         Instance.Accelerometer ??= Accelerometer.current;
         accelerometer = Instance.Accelerometer;
         return Instance.Accelerometer != null;
@@ -148,11 +161,18 @@ public class GameManager : MonoBehaviour
 
     public static bool HasMicrophone(out string microphone)
     {
+        if (!Application.isMobilePlatform)
+        {
+            microphone = null;
+            return false;
+        }
+
         if (Instance.MicDevice != string.Empty)
         {
             microphone = Instance.MicDevice;
             return true;
         }
+
         if (Microphone.devices.Length > 0)
         {
             Instance.MicDevice = Microphone.devices[0];
@@ -173,6 +193,12 @@ public class GameManager : MonoBehaviour
 
     public static bool HasFrontCam(out WebCamTexture camTexture)
     {
+        if (!Application.isMobilePlatform)
+        {
+            camTexture = null;
+            return false;
+        }
+
         if (Instance.CamTexture != null)
         {
             camTexture = Instance.CamTexture;
@@ -201,6 +227,35 @@ public class GameManager : MonoBehaviour
     public static bool HasFrontCam()
     {
         return HasFrontCam(out _);
+    }
+
+    private void SetSensors()
+    {
+        if(Accelerometer.current != null)
+        {
+            Accelerometer = Accelerometer.current;
+            InputSystem.EnableDevice(Accelerometer);
+        }
+
+        if (Microphone.devices.Length > 0)
+        {
+            MicDevice = Microphone.devices[0];
+        }
+
+        WebCamDevice? frontCam = null;
+        foreach (var device in WebCamTexture.devices)
+        {
+            if (device.isFrontFacing)
+            {
+                frontCam = device;
+                break;
+            }
+        }
+
+        if (frontCam.HasValue)
+        {
+            CamTexture = new WebCamTexture(frontCam.Value.name, 160, 120);
+        }
     }
     #endregion
 }

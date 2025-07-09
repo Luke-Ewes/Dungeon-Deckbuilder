@@ -35,25 +35,41 @@ public class HandManager : MonoBehaviour
         {
             Instance = this;
         }
+        canvasRect = canvas.GetComponent<RectTransform>();
     }
 
     private void OnEnable()
     {
         GameManager.Instance.TurnChanged += OnTurnChanged;
-        GameManager.GetPlayer().ActionPointsChanged += UpdateAvailableCards;
+        GameManager.StartCombat += StartCombat;
+        SubToPlayer();
     }
 
     private void OnDisable()
     {
         GameManager.Instance.TurnChanged -= OnTurnChanged;
-        GameManager.GetPlayer().ActionPointsChanged -= UpdateAvailableCards;
+        GameManager.StartCombat -= StartCombat;
     }
+
+    private void SubToPlayer()
+    {
+        GameManager.GetPlayer().ActionPointsChanged += UpdateAvailableCards;
+        GameManager.LoadNewScene += UnsubFromPlayer;
+
+    }
+
+    private void UnsubFromPlayer()
+    {
+        GameManager.GetPlayer().ActionPointsChanged -= UpdateAvailableCards;
+        GameManager.LoadNewScene -= UnsubFromPlayer;
+
+    }    
 
     private void Start()
     {
         if (splineContainer == null)
         {
-            Debug.LogError("SplineContainer is not assigned in HandManager.");
+            OnScreenLogger.LogMessage("SplineContainer is not assigned in HandManager.");
             return;
         }
         if (canvas == null)
@@ -64,9 +80,13 @@ public class HandManager : MonoBehaviour
                 Debug.LogError("Canvas is not assigned in HandManager.");
             }
         }
-        canvasRect = canvas.GetComponent<RectTransform>();
 
-        DrawCard(8);
+    }
+
+    private void StartCombat()
+    {
+        DrawCard(3);
+
     }
 
     /// <summary>
@@ -77,6 +97,11 @@ public class HandManager : MonoBehaviour
     {
         for (int i = 0; i < amountToDraw; i++)
         {
+            if(CardDeck.Instance == null)
+            {
+                OnScreenLogger.LogMessage("No CardDeck Instance found");
+                return;
+            }
             PlayableCard card = CardDeck.Instance.GetRandomCard();
             if (handCards.Count >= maxHandSize) return;
 

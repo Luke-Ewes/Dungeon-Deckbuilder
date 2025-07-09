@@ -7,7 +7,7 @@ public class PlayerInfo : MonoBehaviour
 
     public List<CardObject> currentDeck = new();
 
-    public float currentHealth;
+    [HideInInspector] public float currentHealth;
     public float maxHealth;
 
     private void Awake()
@@ -23,4 +23,14 @@ public class PlayerInfo : MonoBehaviour
         DontDestroyOnLoad(this);
     }
 
+
+    public void OverrideCurrentHelath(float newValue)
+    {
+        currentHealth = newValue;
+    }
+
+    public void OverrideMaxHealth(float newValue)
+    {
+        maxHealth = newValue;
+    }
 }

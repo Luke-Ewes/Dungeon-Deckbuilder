@@ -23,7 +23,7 @@ public class MapData : MonoBehaviour
 
     public void ResetMap()
     {
-        map = new List<List<MapNode>>();
+        map = null;
         currentNode = null;
         currentTier = 0;
     }

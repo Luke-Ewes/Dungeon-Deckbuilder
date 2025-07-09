@@ -2247,6 +2247,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 7d843e9a6661a13498d8be39c7a9231e, type: 2}
   - {fileID: 11400000, guid: 745ee75262aae1b4392b48b7c6034164, type: 2}
   - {fileID: 11400000, guid: f10219a8fbbcf9f4e8b1a27a64958c61, type: 2}
+  bossLayout: {fileID: 11400000, guid: ba17ad710a94ec24d8a6ed8ac221228a, type: 2}
   flyingSpawnPoints:
   - {fileID: 954015667}
   - {fileID: 1489566895}
@@ -2487,6 +2488,10 @@ PrefabInstance:
       propertyPath: startPoint
       value: 
       objectReference: {fileID: 1850618353}
+    - target: {fileID: 2597688035100958957, guid: 7cbd4b9bbb6723248b5d2fa7c5537252, type: 3}
+      propertyPath: maxHandSize
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 3830687150151194418, guid: 7cbd4b9bbb6723248b5d2fa7c5537252, type: 3}
       propertyPath: character
       value: 

@@ -5,7 +5,7 @@ public class EndTurnButton : MonoBehaviour
 {
     private Button button;
 
-    private void Start()
+    private void Awake()
     {
         button = GetComponent<Button>();
         button.onClick.AddListener(OnEndTurnButtonClicked);

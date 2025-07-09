@@ -23,18 +23,14 @@ public class CardDeck : MonoBehaviour
         {
             Instance = this;
         }
-        LoadData(); 
-    }
-
-    private void Start()
-    {
-        if(currentDeck.Count == 0)
+        LoadData();
+        if (currentDeck.Count == 0)
         {
             InitializeDeck();
         }
         drawPile = new List<CardObject>(currentDeck);
-
     }
+
     private void InitializeDeck()
     {
         currentDeck = new();
@@ -45,6 +41,8 @@ public class CardDeck : MonoBehaviour
                 AddCardToDeck(pair.Key);
             }
         }
+
+        
     }
 
     private void OnEnable()
@@ -94,7 +92,9 @@ public class CardDeck : MonoBehaviour
     /// <returns></returns>
     public PlayableCard GetRandomCard()
     {
+
         CardObject card = null;
+        OnScreenLogger.LogMessage(drawPile.Count.ToString());
         if(drawPile.Count == 0)
         {
             // If the draw pile is empty, shuffle the discard pile back into the draw pile

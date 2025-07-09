@@ -13,6 +13,7 @@ public class MainMenu : MonoBehaviour
 
     public void StartGame()
     {
+        PlayerInfo.Instance.OverrideCurrentHelath(PlayerInfo.Instance.maxHealth);
         GameManager.LoadScene("MapScene");
     }
 

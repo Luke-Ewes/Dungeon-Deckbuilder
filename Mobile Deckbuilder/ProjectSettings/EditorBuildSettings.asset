@@ -20,6 +20,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/CampfireScene.unity
     guid: 6ae0870a99fb64443bc94c51a4ec0b4d
+  - enabled: 1
+    path: Assets/Scenes/EndScreen.unity
+    guid: f991f520735f35c42852035f1eb5ef74
   m_configObjects:
     com.unity.adaptiveperformance.google.android.provider_settings: {fileID: 11400000, guid: 209286c7d2827e24eb556059d60ece7c, type: 2}
     com.unity.adaptiveperformance.loader_settings: {fileID: 11400000, guid: 32ccca2168ab15d489f24a2ee9cbb60b, type: 2}

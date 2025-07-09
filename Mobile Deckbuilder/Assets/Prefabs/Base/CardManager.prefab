@@ -45,7 +45,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   allCards:
-  - {fileID: 11400000, guid: 6682ae8be2b69544d8c3d616e601e810, type: 2}
   - {fileID: 11400000, guid: ddd6cd7213a3f2c4aa7079e48127f6c0, type: 2}
   - {fileID: 11400000, guid: c700bd732fe02314faa1bf74835d7a86, type: 2}
   - {fileID: 11400000, guid: 54d5a6eb5095a8b4ebd7287d8badecb5, type: 2}
